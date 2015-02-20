@@ -20,7 +20,7 @@ module.exports = function (slack, body) {
 
     channel.postMessage({
         username: 'harold-bot',
-        icon_url: 'https://s3-us-west-2.amazonaws.com/slack-files2/avatars/2015-02-18/3766806521_0b6aba5ca200538b9496_48.jpg',
+        icon_url: 'https://s3.amazonaws.com/aosyborg/harold-bot.png',
         attachments: [{
             pretext: 'Merge request ' + properties.state + ': ',
             fallback: 'Merge request ' + properties.state,
