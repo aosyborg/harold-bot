@@ -40,7 +40,12 @@ cp -r $DIR/etc $BUILDDIR/
 
 # Main
 mkdir -p $BUILDDIR/opt/harold-bot
-cp -r $DIR/../src/* $BUILDDIR/opt/harold-bot
+cp -r $DIR/../bin $BUILDDIR/opt/harold-bot
+cp -r $DIR/../config $BUILDDIR/opt/harold-bot
+cp -r $DIR/../lib $BUILDDIR/opt/harold-bot
+cp -r $DIR/../routes $BUILDDIR/opt/harold-bot
+cp -r $DIR/../app.js $BUILDDIR/opt/harold-bot
+cp -r $DIR/../package.json $BUILDDIR/opt/harold-bot
 
 # Install dependancies
 cd $BUILDDIR/opt/harold-bot
