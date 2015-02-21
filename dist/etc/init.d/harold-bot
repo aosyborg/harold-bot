@@ -12,6 +12,7 @@
 # mod_ssl needs a pass-phrase from the user.
 INITLOG_ARGS=""
 
+USER=harold-bot
 EXEC=/opt/harold-bot/bin/www
 PIDFILE=/var/run/harold-bot.pid
 
@@ -26,12 +27,24 @@ case "$1" in
   start)
     log_daemon_msg "Starting  harold-bot"
 
+    # Ensure there is some sort of config file present
     if [ ! -f /etc/harold-bot/config.sh ]; then
-        echo "ERROR: no config file found at /etc/harold-bot/config.sh"
-        exit 1
+        if [ ! -f /etc/harold-bot/config.sh.default ]; then
+            echo "ERROR: config file missing"
+            exit 1
+        fi
     fi
 
-    source /etc/harold-bot/config.sh
+    # Load the default config
+    if [ -f /etc/harold-bot/config.sh.default ]; then
+        source /etc/harold-bot/config.sh.default
+    fi
+
+    # Overwrite the default values with any custom
+    if [ -f /etc/harold-bot/config.sh ]; then
+        source /etc/harold-bot/config.sh
+    fi
+
     if start-stop-daemon --start --quiet --oknodo --make-pidfile --background --chuid $USER --pidfile $PIDFILE --exec $EXEC; then
         log_end_msg 0
     else

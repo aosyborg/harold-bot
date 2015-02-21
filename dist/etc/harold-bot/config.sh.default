@@ -3,3 +3,6 @@
 export SLACK_TOKEN=''
 export SLACK_AUTORECONNECT=true
 export SLACK_AUTOMARK=true
+export GITLAB_PROJECT_CHANNELS='{
+    "namespace/repo": "general"
+}'

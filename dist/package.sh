@@ -17,7 +17,7 @@ if [[ $# -eq 0 ]] ; then
 fi
 
 # Ensure version is of proper format
-if ! [[ $1 =~ ^[[:digit:]]+\.[[:digit:]]\-[[:digit:]]$ ]] ; then
+if ! [[ $1 =~ ^[[:digit:]]+\.[[:digit:]]\-[[:digit:]]+$ ]] ; then
     display_help
     exit 1
 fi
@@ -36,7 +36,10 @@ sed -i -e "s|_VERSION_|$1|" $BUILDDIR/DEBIAN/control
 #
 
 # Configs and start script
-cp -r $DIR/etc $BUILDDIR/
+mkdir -p $BUILDDIR/etc/harold-bot
+cp -r $DIR/etc/harold-bot/config.sh.default $BUILDDIR/etc/harold-bot
+cp -r $DIR/etc/init.d $BUILDDIR/etc
+cp -r $DIR/etc/nginx $BUILDDIR/etc
 
 # Main
 mkdir -p $BUILDDIR/opt/harold-bot
