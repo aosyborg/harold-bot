@@ -25,4 +25,4 @@ curl -X PUT -T "${file}" \
   -H "Date: ${dateValue}" \
   -H "Content-Type: ${contentType}" \
   -H "Authorization: AWS $AWS_ACCESS_KEY_ID:${signature}" \
-  https://$AWS_S3_BUCKET.s3.amazonaws.com/${file}
+  https://$AWS_S3_BUCKET.s3.amazonaws.com/repo/${file}
