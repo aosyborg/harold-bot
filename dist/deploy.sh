@@ -12,6 +12,7 @@ if [ ${package_in_s3} ]; then
     exit 0
 fi
 
+# update Packages.gz
 
 authorization() {
     local signature="$(string_to_sign | hmac_sha1 | base64)"
@@ -43,24 +44,33 @@ date_string() {
     LC_TIME=C date "+%a, %d %h %Y %T %z"
 }
 
-file="${package}"
-bucket="aosyborg"
-content_type="application/x-debian-package"
+s3put() {
+    file="$1"
+    bucket="aosyborg"
+    content_type=""
+    #application/x-debian-package"
 
-http_method=PUT
-acl="public-read"
-remote_path="repo/${file##*/}"
-content_md5="$(bin_md5 < "$file" | base64)"
-date="$(date_string)"
+    http_method=PUT
+    acl="public-read"
+    remote_path="repo/${file##*/}"
+    content_md5="$(bin_md5 < "$file" | base64)"
+    date="$(date_string)"
 
-url="https://$bucket.s3.amazonaws.com/$remote_path"
+    url="https://$bucket.s3.amazonaws.com/$remote_path"
 
-curl -qsSf -T "$file" \
-  -H "Authorization: $(authorization)" \
-  -H "x-amz-acl: $acl" \
-  -H "Date: $date" \
-  -H "Content-MD5: $content_md5" \
-  -H "Content-Type: $content_type" \
-  "$url"
+    curl -qsSf -T "$file" \
+      -H "Authorization: $(authorization)" \
+      -H "x-amz-acl: $acl" \
+      -H "Date: $date" \
+      -H "Content-MD5: $content_md5" \
+      -H "Content-Type: $content_type" \
+      "$url"
+}
 
-echo "$url"
+# Update the package
+s3put ${package}
+
+# Update Packages.gz
+dpkg-scanpackages . | gzip > Packages.gz
+curl http://aosyborg.s3.amazonaws.com/repo/Packages.gz >> Packages.gz
+s3put Packages.gz
