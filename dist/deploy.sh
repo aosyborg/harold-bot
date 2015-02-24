@@ -1,28 +1,66 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -x
+#set -x
 
-#Ensure version was passed
-if [[ $# -eq 0 ]] ; then
-    display_help
-    exit 1
+changelog_version=$(cat DEBIAN/changelog | grep -Eom1 "[0-9]+\.[0-9]+\-[0-9]+")
+package="haroldbot_${changelog_version}.deb"
+package_in_s3=$(curl http://aosyborg.s3.amazonaws.com/ | grep ${package})
+
+# Don't deploy if the package already exists
+if [ ${package_in_s3} ]; then
+    echo "${package} already in S3!"
+    exit 0
 fi
 
-# Ensure version is of proper format
-if ! [[ $1 =~ ^[[:digit:]]+\.[[:digit:]]\-[[:digit:]]+$ ]] ; then
-    display_help
-    exit 1
-fi
 
-file="haroldbot_$1.deb"
-resource="/$AWS_S3_BUCKET/${file}"
-contentType="application/x-debian-package"
-dateValue=`date -R`
-stringToSign="PUT\n\n${contentType}\n${dateValue}\n${resource}"
-signature=`echo -en ${stringToSign} | openssl sha1 -hmac $AWS_SECRET_ACCESS_KEY -binary | base64`
-curl -X PUT -T "${file}" \
-  -H "Host: $AWS_S3_BUCKET.s3.amazonaws.com" \
-  -H "Date: ${dateValue}" \
-  -H "Content-Type: ${contentType}" \
-  -H "Authorization: AWS $AWS_ACCESS_KEY_ID:${signature}" \
-  https://$AWS_S3_BUCKET.s3.amazonaws.com/repo/${file}
+authorization() {
+    local signature="$(string_to_sign | hmac_sha1 | base64)"
+    echo "AWS ${AWS_ACCESS_KEY_ID?}:${signature}"
+}
+
+hmac_sha1() {
+    openssl dgst -binary -sha1 -hmac "${AWS_SECRET_ACCESS_KEY?}"
+}
+
+base64() {
+    openssl enc -base64
+}
+
+bin_md5() {
+    openssl dgst -binary -md5
+}
+
+string_to_sign() {
+    echo "$http_method"
+    echo "$content_md5"
+    echo "$content_type"
+    echo "$date"
+    echo "x-amz-acl:$acl"
+    printf "/$bucket/$remote_path"
+}
+
+date_string() {
+    LC_TIME=C date "+%a, %d %h %Y %T %z"
+}
+
+file="$1"
+bucket="aosyborg"
+content_type="$2"
+
+http_method=PUT
+acl="public-read"
+remote_path="repo/${file##*/}"
+content_md5="$(bin_md5 < "$file" | base64)"
+date="$(date_string)"
+
+url="https://$bucket.s3.amazonaws.com/$remote_path"
+
+curl -qsSf -T "$file" \
+  -H "Authorization: $(authorization)" \
+  -H "x-amz-acl: $acl" \
+  -H "Date: $date" \
+  -H "Content-MD5: $content_md5" \
+  -H "Content-Type: $content_type" \
+  "$url"
+
+echo "$url"
