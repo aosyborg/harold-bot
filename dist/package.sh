@@ -5,31 +5,27 @@ set -x
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 APPNAME="haroldbot"
 
-display_help() {
-    echo "Usage: package.sh <major version>.<minor version>-<package revision>"
-    echo "Example: package.sh 1.0-1"
-}
-
-#Ensure version was passed
-if [[ $# -eq 0 ]] ; then
-    display_help
+# Ensure changelog exists
+if [ ! -f DEBIAN/changelog ]; then
+    echo "Change log missing!"
     exit 1
 fi
 
-# Ensure version is of proper format
-if ! [[ $1 =~ ^[[:digit:]]+\.[[:digit:]]\-[[:digit:]]+$ ]] ; then
-    display_help
+# Grab version from change log
+changelog_version=$(cat DEBIAN/changelog | grep -Eom1 "[0-9]+\.[0-9]+\-[0-9]+")
+if [ ! ${changelog_version} ]; then
+    echo "Unable to find version in changelog!"
     exit 1
 fi
 
 # Create build directory
 BUILDDIR="$DIR/$APPNAME"
-BUILDDIR+="_$1"
+BUILDDIR+="_${changelog_version}"
 mkdir $BUILDDIR
 cp -r $DIR/DEBIAN $BUILDDIR
 
 # Update the version
-sed -i -e "s|_VERSION_|$1|" $BUILDDIR/DEBIAN/control
+sed -i -e "s|_VERSION_|${changelog_version}|" $BUILDDIR/DEBIAN/control
 
 ##
 # Stage code for packaging

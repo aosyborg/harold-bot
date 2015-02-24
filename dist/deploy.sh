@@ -43,9 +43,9 @@ date_string() {
     LC_TIME=C date "+%a, %d %h %Y %T %z"
 }
 
-file="$1"
+file="${package}"
 bucket="aosyborg"
-content_type="$2"
+content_type="application/x-debian-package"
 
 http_method=PUT
 acl="public-read"
