@@ -12,65 +12,18 @@ if [ ${package_in_s3} ]; then
     exit 0
 fi
 
-# update Packages.gz
-
-authorization() {
-    local signature="$(string_to_sign | hmac_sha1 | base64)"
-    echo "AWS ${AWS_ACCESS_KEY_ID?}:${signature}"
-}
-
-hmac_sha1() {
-    openssl dgst -binary -sha1 -hmac "${AWS_SECRET_ACCESS_KEY?}"
-}
-
-base64() {
-    openssl enc -base64
-}
-
-bin_md5() {
-    openssl dgst -binary -md5
-}
-
-string_to_sign() {
-    echo "$http_method"
-    echo "$content_md5"
-    echo "$content_type"
-    echo "$date"
-    echo "x-amz-acl:$acl"
-    printf "/$bucket/$remote_path"
-}
-
-date_string() {
-    LC_TIME=C date "+%a, %d %h %Y %T %z"
-}
-
-s3put() {
-    file="$1"
-    bucket="aosyborg"
-    content_type=""
-    #application/x-debian-package"
-
-    http_method=PUT
-    acl="public-read"
-    remote_path="repo/${file##*/}"
-    content_md5="$(bin_md5 < "$file" | base64)"
-    date="$(date_string)"
-
-    url="https://$bucket.s3.amazonaws.com/$remote_path"
-
-    curl -qsSf -T "$file" \
-      -H "Authorization: $(authorization)" \
-      -H "x-amz-acl: $acl" \
-      -H "Date: $date" \
-      -H "Content-MD5: $content_md5" \
-      -H "Content-Type: $content_type" \
-      "$url"
-}
+# Install the latest aws cli
+virtualenv ~/.virtualenv
+pip install awscli
 
 # Update the package
-s3put ${package}
+~/.virtualenv/bin/aws s3 cp ${package} "s3://aosyborg/repo/${package}"
 
 # Update Packages.gz
 dpkg-scanpackages . | gzip > Packages.gz
 curl http://aosyborg.s3.amazonaws.com/repo/Packages.gz >> Packages.gz
-s3put Packages.gz
+~/.virtualenv/bin/aws s3 cp Packages.gz s3://aosyborg/repo/Packages.gz
+
+# Install on EC2 instances
+aws opsworks --region us-east-1 create-deployment --stack-id $AWS_OPSWORKS_STACK_ID
+    --command "{\"Name\":\"execute_recipes\", \"Args\":{\"recipes\":[\"harold-bot::deploy\"]}}
