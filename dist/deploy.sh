@@ -26,4 +26,4 @@ curl http://aosyborg.s3.amazonaws.com/repo/Packages.gz >> Packages.gz
 
 # Install on EC2 instances
 aws opsworks --region us-east-1 create-deployment --stack-id $AWS_OPSWORKS_STACK_ID
-    --command "{\"Name\":\"execute_recipes\", \"Args\":{\"recipes\":[\"harold-bot::deploy\"]}}
+    --command "{\"Name\":\"execute_recipes\", \"Args\":{\"recipes\":[\"harold-bot::deploy\"]}}"
