@@ -17,19 +17,19 @@ files:
     destination: /opt/harold-bot/node_modules
 
   - source: app.js
-    destination: /opt/harold-bot/app.js
+    destination: /opt/harold-bot
 
   - source: dist/etc/harold-bot/config.sh.default
-    destination: /etc/harold-bot/config.sh.default
+    destination: /etc/harold-bot
 
   - source: dist/etc/nginx/sites-available/harold-bot
-    destination: /etc/nginx/sites-available/harold-bot
+    destination: /etc/nginx/sites-available
 
   - source: dist/etc/nginx/sites-enabled/harold-bot
-    destination: /etc/nginx/sites-enabled/harold-bot
+    destination: /etc/nginx/sites-enabled
 
   - source: dist/etc/init.d/harold-bot
-    destination: /etc/init.d/harold-bot
+    destination: /etc/init.d
 
 permissions:
   - object: /etc/init.d/harold-bot
