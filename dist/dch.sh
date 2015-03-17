@@ -24,6 +24,6 @@ if [ ! $EDITOR ]; then
 fi
 
 # Prompt for update then write it
-echo "${content}" | cat - DEBIAN/changelog > changelog
+echo "${content}" | cat - changelog > changelog.tmp
+mv changelog.tmp changelog
 $EDITOR changelog
-mv -f changelog DEBIAN/changelog
