@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
 # Ensure changelog exists
-if [ ! -f changelog ]; then
+if [ ! -f dist/changelog ]; then
     echo "Change log missing!"
     exit 1
 fi
 
 # Grab version from change log
-changelog_version=$(cat changelog | grep -Eom1 "[0-9]+\.[0-9]+")
+changelog_version=$(cat dist/changelog | grep -Eom1 "[0-9]+\.[0-9]+")
 if [ ! ${changelog_version} ]; then
     echo "Unable to find version in changelog!"
     exit 1
