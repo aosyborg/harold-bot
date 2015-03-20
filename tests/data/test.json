@@ -1,0 +1,47 @@
+{
+   "before":"8b37e00b125508e1c70d8d31165d6f8a997e9944",
+   "after":"2c6cd1feb5fcba6ea31cf91812c7ac774b46138d",
+   "ref":"refs/heads/master",
+   "user_id":120,
+   "user_name":"Dave Symons",
+   "project_id":466,
+   "repository":{
+      "name":"personalization",
+      "url":"git@cm-git.concurtech.net:161770/personalization.git",
+      "description":"Micro-service for personalization",
+      "homepage":"https://cm-git.concurtech.net/161770/personalization"
+   },
+   "commits":[
+      {
+         "id":"2c6cd1feb5fcba6ea31cf91812c7ac774b46138d",
+         "message":"Merge branch 'features/install-fix' into 'master'\n\nCouple of minor issues with install script\n\npersonalization monit conf needed to be moved.\nadded directory creation to install script\n\nSee merge request !6\n",
+         "timestamp":"2015-02-13T10:02:00-08:00",
+         "url":"https://cm-git.concurtech.net/161770/personalization/commit/2c6cd1feb5fcba6ea31cf91812c7ac774b46138d",
+         "author":{
+            "name":"Dave Symons",
+            "email":"david.symons@concur.com"
+         }
+      },
+      {
+         "id":"bf1c295aa43c48a3f94c106cf095903cf6030cd3",
+         "message":"TRIPIT-49493, moved monit.d to location install script expects, added directory craetion to install script\n",
+         "timestamp":"2015-02-13T09:51:50-08:00",
+         "url":"https://cm-git.concurtech.net/161770/personalization/commit/bf1c295aa43c48a3f94c106cf095903cf6030cd3",
+         "author":{
+            "name":"Brian Lund",
+            "email":"brian.lund@concur.com"
+         }
+      },
+      {
+         "id":"8b37e00b125508e1c70d8d31165d6f8a997e9944",
+         "message":"Merge branch 'install' into 'master'\n\nAdding installation script\n\nInstallation originally lived in vaticinator. This request moves the installation code to the personalization project and adds some missing pieces.\n\nSee merge request !5\n",
+         "timestamp":"2015-02-12T16:50:39-08:00",
+         "url":"https://cm-git.concurtech.net/161770/personalization/commit/8b37e00b125508e1c70d8d31165d6f8a997e9944",
+         "author":{
+            "name":"Dave Symons",
+            "email":"david.symons@concur.com"
+         }
+      }
+   ],
+   "total_commits_count":3
+}
