@@ -3,27 +3,38 @@ version: %VERSION%
 files:
   - source: bin
     destination: /opt/harold-bot/bin
+
   - source: config
     destination: /opt/harold-bot/config
+
   - source: lib
     destination: /opt/harold-bot/lib
+
   - source: routes
     destination: /opt/harold-bot/routes
+
   - source: node_modules
     destination: /opt/harold-bot/node_modules
+
   - source: app.js
-    destination: /opt/harold-bot/app.js
-  - source: dist/harold-bot/config.sh.default
-    destination: /etc/harold-bot/config.sh.default
-  - source: dist/nginx/sites-available/harold-bot
-    destination: /etc/nginx/sites-available/harold-bot
-  - source: dist/nginx/sites-enabled/harold-bot
-    destination: /etc/nginx/sites-enabled/harold-bot
-  - source: dist/init.d/harold-bot
-    destination: /etc/init.d/harold-bot
+    destination: /opt/harold-bot
+
+  - source: dist/etc/harold-bot/config.sh.default
+    destination: /etc/harold-bot
+
+  - source: dist/etc/nginx/sites-available/harold-bot
+    destination: /etc/nginx/sites-available
+
+  - source: dist/etc/nginx/sites-enabled/harold-bot
+    destination: /etc/nginx/sites-enabled
+
+  - source: dist/etc/init.d/harold-bot
+    destination: /etc/init.d
+
 permissions:
   - object: /etc/init.d/harold-bot
     mode: 755
+
 hooks:
   ApplicationStop:
     - location: dist/application_stop.sh
@@ -31,6 +42,7 @@ hooks:
   AfterInstall:
     - location: dist/after_install.sh
       runas: root
+
   ApplicationStart:
     - location: dist/application_start.sh
       runas: root
