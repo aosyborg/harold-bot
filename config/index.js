@@ -1,5 +1,6 @@
 var config = {
-    token: process.env.SLACK_TOKEN || '',
+    //token: process.env.SLACK_TOKEN || '',
+    token: 'xoxb-3766806459-mWtiVLi0QwdO0rpdVvQqGH4n',
     auto_reconnect: process.env.SLACK_AUTORECONNECT || true,
     auto_mark: process.env.SLACK_AUTOMARK || true,
     gitlab_project_channels: {

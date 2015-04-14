@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-/etc/init.d/harold-bot start
+monit start harold-bot
