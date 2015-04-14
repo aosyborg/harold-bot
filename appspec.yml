@@ -31,8 +31,8 @@ files:
   - source: dist/etc/init.d/harold-bot
     destination: /etc/init.d
 
-  - source: dist/etc/monit/config.d/harold-bot.conf
-    destination: /etc/monit/config.d
+  - source: dist/etc/monit/conf.d/harold-bot.conf
+    destination: /etc/monit/conf.d
 
 permissions:
   - object: /etc/init.d/harold-bot
