@@ -6,7 +6,6 @@ service nginx restart
 service rsyslog restart
 
 AWSLOGS_CONFIG_FILE="/var/awslogs/etc/awslogs.conf"
-# Insert if theconfig file exist is our application isnt defined?
 if [[ -f ${AWSLOGS_CONFIG_FILE} && !($(cat $AWSLOGS_CONFIG_FILE) =~ haroldbot) ]]; then
     >&2 echo "
         [/var/log/haroldbot.log]
