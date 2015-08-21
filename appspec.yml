@@ -34,9 +34,6 @@ files:
   - source: dist/etc/monit/conf.d/harold-bot.conf
     destination: /etc/monit/conf.d
 
-  - source: dist/etc/rsyslog.d/10-haroldbot.conf
-    destination: /etc/rsyslog.d
-
 permissions:
   - object: /etc/init.d/harold-bot
     mode: 755
