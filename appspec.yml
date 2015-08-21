@@ -1,5 +1,5 @@
 os: linux
-version: %VERSION%
+version: 0.0
 files:
   - source: bin
     destination: /opt/harold-bot/bin

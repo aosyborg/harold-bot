@@ -46,7 +46,7 @@ case "$1" in
     fi
 
     if start-stop-daemon --start --quiet --oknodo --make-pidfile --background --chuid $USER --pidfile $PIDFILE \
-                    --startas /bin/bash -- -c "exec $EXEC | logger -i -t HaroldBot"; then
+                    --startas /bin/bash -- -c "exec $EXEC >> /var/log/haroldbot.log"; then
 
         log_end_msg 0
     else
