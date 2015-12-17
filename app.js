@@ -5,6 +5,7 @@ var express = require('express'),
 
 var gitlab = require('./routes/gitlab'),
     slack = require('./lib/slackbot'),
+    tripit = require('./lib/tripit'),
     error_handler = require('./routes/error_handler');
 
 app.use(morgan('combined'));
@@ -16,6 +17,7 @@ app.use(slack);
 
 // Webhooks
 app.use(gitlab);
+app.use(tripit);
 
 // Error handler has to be last
 //app.use(error_handler);
