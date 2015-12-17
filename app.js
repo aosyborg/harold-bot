@@ -9,8 +9,18 @@ var gitlab = require('./routes/gitlab'),
     error_handler = require('./routes/error_handler');
 
 app.use(morgan('combined'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(function(req, res, next) {
+    var data = '';
+    req.setEncoding('utf8');
+    req.on('data', function(chunk) {
+        data += chunk;
+    });
+    req.on('end', function() {
+        req.rawBody = data;
+        next();
+    });
+});
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Slack real time messaging
 app.use(slack);
