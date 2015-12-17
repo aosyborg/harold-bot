@@ -5,7 +5,7 @@ var express = require('express'),
 
 var gitlab = require('./routes/gitlab'),
     slack = require('./lib/slackbot'),
-    tripit = require('./lib/tripit'),
+    tripit = require('./routes/tripit'),
     error_handler = require('./routes/error_handler');
 
 app.use(morgan('combined'));
