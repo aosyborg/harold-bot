@@ -15,7 +15,6 @@ router.use('/gitlab', function (request, response, next) {
         return response.status(404).json('Not Found');
     }
 
-    console.log(body);
     event_types[type](slack, body);
     response.json('Ok');
 });
