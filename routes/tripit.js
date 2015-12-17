@@ -12,7 +12,7 @@ router.use('/tripit/cloudformation', function (request, response, next) {
         return response.status(404).json('Not Found');
     }
 
-    event_types[event](request.rawBody, request.slack);
+    event_types[event](request.body, request.slack);
     response.json('Ok');
 });
 
